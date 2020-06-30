@@ -1,0 +1,1 @@
+web: gunicorn aptigym_backend.wsgi --log-file -

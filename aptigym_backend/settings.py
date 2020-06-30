@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'li+$s30p#of37#0kgdo=5#vukyb@ol69+(1$nys(!12-c8_tv%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'aptigym_backend.urls'
@@ -121,7 +122,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/uploads/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
