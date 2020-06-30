@@ -19,9 +19,13 @@ class Institute(models.Model):
 
 
 class Student(models.Model):
+    reg_no = models.CharField(max_length=20, blank=True, null=True)
     name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
+    phone_number = models.CharField(max_length=20, unique=True)
     password = models.CharField(max_length=257)
+    puc_college = models.CharField(max_length=200, blank=True, null=True)
+    preffered_branch = models.CharField(max_length=100, blank=True, null=True)
     institute = models.ForeignKey(
         Institute, on_delete=models.CASCADE, related_name="students")
 

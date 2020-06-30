@@ -58,9 +58,24 @@
             {% endif %}
           </div>
           <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="text" class="form-control" placeholder="Enter Phone Number" name="phone_number" id="phone"
+              value="{% if phone_number %}{{phone_number}}{% endif %}" required />
+            {% if phone_number_exists %}
+            <div>
+              <small class="text-danger">Phone Number already exists, <a href="/log-in">log-in</a></small>
+            </div>
+            {% endif %}
+          </div>
+          <div class="form-group">
             <label for="name">Name</label>
             <input type="text" class="form-control" placeholder="Enter name" name="name" id="name"
               value="{% if name %}{{name}}{% endif %}" required />
+          </div>
+          <div class="form-group">
+            <label for="reg_number">Reg. No.</label>
+            <input type="text" class="form-control" placeholder="Enter PUC Registration number" name="reg_no"
+              value="{% if reg_no %}{{reg_no}}{% endif %}" id="reg_number" />
           </div>
           <div class="form-group">
             <label for="pwd">Password</label>
@@ -72,6 +87,16 @@
             <input oninput="confirmPassword()" type="password" class="form-control" placeholder="Confirm password"
               name="password" id="confirm_pwd" required />
             <div class="text-danger" id="confirm_pwd_text"></div>
+          </div>
+          <div class="form-group">
+            <label for="puc_college">PUC College</label>
+            <input type="text" class="form-control" placeholder="Enter PUC college name you stadied" name="puc_college"
+              value="{% if puc_college %}{{puc_college}}{% endif %}" id="puc_college" required />
+          </div>
+          <div class="form-group">
+            <label for="preffered_branch">Preffered Branch in Engineering</label>
+            <input type="text" class="form-control" placeholder="Enter Preffered Branch" name="preffered_branch"
+              value="{% if preffered_branch %}{{preffered_branch}}{% endif %}" id="preffered_branch" required />
           </div>
           <!-- <div class="form-group">
               <label for="institute_code">Institute Code</label>
