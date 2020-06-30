@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Test</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
+
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <!-- Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+  <script>
+    let questions_selected = [];
+
+    function updateQuestions(checked, id) {
+      if (checked)
+        questions_selected.push(id);
+      else {
+        index = questions_selected.indexOf(id);
+        questions_selected.splice(index, 1);
+      }
+      let no_of_selected_questions_element = document.getElementById("no_of_selected_questions");
+      no_of_selected_questions_element.innerHTML = questions_selected.length;
+    }
+
+    function moveNext() {
+      document.getElementById("question_selector").style.display = 'none';
+      document.getElementById("test_fields").style.display = 'block';
+      document.getElementById("questions_input").value = questions_selected;
+    }
+
+    function movePrevious() {
+      document.getElementById("question_selector").style.display = 'block';
+      document.getElementById("test_fields").style.display = 'none';
+    }
+  </script>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <!-- Brand -->
+    <a class="navbar-brand" href="/">AptiGym</a>
+
+    <!-- Toggler/collapsibe Button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar links -->
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/test/test-list">Test</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/test/test-list">Results</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="">
+
+  </div>
+  <div id="question_selector">
+    <div class="row mx-2 justify-content-center">
+      <div class="col-12 col-md-6 px-2 my-2">
+        <div class="row">
+          <div class="col text-center border border-left-0 border-top-0 border-right-0">
+            <h4>Select Questions</h4>
+          </div>
+          <div class="w-100"></div>
+          <div class="col-auto my-2 ml-auto mr-1">
+            Selected questions: <strong id="no_of_selected_questions">0</strong>
+          </div>
+          <div class="w-100"></div>
+          <div class="col mb-2">
+            <div id="category">
+              {% for category in categories %}
+              <div class="card">
+                <div class="card-header">
+                  <a class="card-link" data-toggle="collapse" href="#category{{category.id}}">
+                    {{category.title}}
+                  </a>
+                </div>
+                <div id="category{{category.id}}" class="collapse" data-parent="#category">
+                  <div class="card-body">
+                    <div id="subcategory{{category.id}}">
+                      {% for subcategory in category.sub_categories %}
+                      <div class="card">
+                        <div class="card-header">
+                          <a class="card-link" data-toggle="collapse"
+                            href="#subcategory{{category.id}}{{subcategory.id}}">
+                            {{subcategory.title}}
+                          </a>
+                        </div>
+                        <div id="subcategory{{category.id}}{{subcategory.id}}" class="collapse"
+                          data-parent="#subcategory{{category.id}}">
+                          <div class="card-body">
+                            <div id="questions">
+                              {% for question in subcategory.questions %}
+                              <div class="card mb-2">
+                                <div class="card-header">
+                                  <div class="row">
+                                    <div class="col">
+                                      {{question.question}}
+                                      <div class="w-100"></div>
+                                      <img class="img-fluid" src="/uploads/{{question.image}}" alt="">
+                                    </div>
+                                    <div class="col-auto ml-auto">
+                                      <div class="custom-control custom-checkbox">
+                                        <input onchange="updateQuestions(this.checked, {{question.id}})" type="checkbox"
+                                          class="custom-control-input" id="question{{question.id}}" value="customEx" />
+                                        <label class="custom-control-label" for="question{{question.id}}"></label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  {% for option in question.options %}
+                                  <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input"
+                                      id="option{{question.id}}{{option.id}}" name="{{question.id}}" value="customEx"
+                                      disabled {% if option.is_true %} checked {% endif %} />
+                                    <label class="custom-control-label"
+                                      for="option{{question.id}}{{option.id}}">{{option.option}}</label>
+                                  </div>
+                                  {% endfor %}
+                                </div>
+                              </div>
+                              {% endfor %}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-auto ml-auto">
+            <button class="btn btn-primary" onclick="moveNext()">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="test_fields" style="display:none;">
+    <div class="container mt-3">
+      <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-7 col-sm-8 col-xs-10 mx-2 p-3 border rounded">
+          <div class="text-center border border-top-0 border-right-0 border-left-0 mb-2">
+            <h5>Finish</h5>
+          </div>
+          <div class="w-100"></div>
+          <form action="/test/i/create-test-post" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="questions" value="" id="questions_input" />
+            <div class="form-group">
+              <label for="title">Title</label>
+              <input type="text" class="form-control" placeholder="Enter Title" name="title" id="title"
+                value="{% if title %}{{title}}{% endif %}" required />
+            </div>
+            <div class="form-group">
+              <label for="description">Description</label>
+              <input type="text" class="form-control" placeholder="Enter description" name="description"
+                id="description" value="{% if description %}{{description}}{% endif %}" required />
+            </div>
+            <div class="form-group">
+              <label for="duration">Total Duration</label>
+              <input type="time" class="form-control" placeholder="Enter duration" name="total_duration" id="duration"
+                required />
+            </div>
+            <div class="form-group">
+              <label for="commence_at">Commence at</label>
+              <input type="datetime-local" class="form-control" placeholder="Enter Commence time" name="commence_at"
+                id="commence_at" required />
+            </div>
+            <div class="form-group">
+              <label for="stop_commencing_after">Stop Commencing after</label>
+              <input type="datetime-local" class="form-control" name="stop_commencing_after" id="stop_commencing_after"
+                required />
+            </div>
+            <!-- <div class="form-group">
+                <label for="institute_code">Institute Code</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  placeholder="Enter Institute Code"
+                  name="institute_code"
+                  id="institute_code"
+                />
+              </div> -->
+            <button class="btn btn-secondary" onclick="movePrevious()">Previous</button>
+            <button type="submit" class="btn btn-primary float-right">Create</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,82 @@
+{% extends "nav_institute.html" %} {% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<div class="container-fluid">
+    <div class="row mr-lg-1">
+        <div class="col-12 col-md-3 col-xl-2 p-0" id="sideNav">
+            <nav class="navbar navbar-expand-md navbar-light bg-light border">
+                <div class="d-md-none">Questions</div>
+                <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse"
+                    data-target="#sideNavQuestions" aria-controls="sideNavQuestions" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse border" id="sideNavQuestions">
+                    <!-- Nav tabs -->
+                    <ul class="w-100 nav nav-pills nav-justified flex-column">
+                        {% for student in students %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if forloop.first %}active{% endif %}" data-toggle="tab"
+                                href="#student{{student.student.id}}">{{ student.student.name }}
+                                (score: {{student.score}})</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+            </nav>
+        </div>
+        <main class="col-12 col-md-9 col-xl-9 py-md-3 pl-md-5 bd-content mx-2">
+            <!-- Tab panes -->
+            <div class="tab-content">
+                {% for student in students %}
+                <div class="tab-pane container {% if forloop.first %}active{% endif %}"
+                    id="student{{student.student.id}}">
+                    <div class="row mb-2 mt-0">
+                        <div class="col-auto ml-auto">
+                            score: {{student.score}}/{{student.total_questions}}
+                        </div>
+                    </div>
+                    {% for question in student.questions %}
+                    <div class="card mb-2 {% if question.is_correct %}border border-success{% endif %}">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col">
+                                    {{question.question.question}}
+                                    {% if question.question.question_image %}
+                                    <div class="w-100"></div>
+                                    <img class="img-fluid" src="/uploads/{{question.question.question_image}}" alt="">
+                                    {% endif %}
+                                </div>
+                                <div class="col-auto ml-auto">
+                                    {% if question.is_correct %}<i class="text-success ml-1 fa fa-check"></i>{% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            {% for option in question.options %}
+                            <div class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input"
+                                    id="option{{question.question.id}}{{option.option.id}}"
+                                    name="s{{student.student.id}}q{{question.question.id}}o{{option.option.id}}"
+                                    value="customEx" disabled {% if option.is_marked %} checked {% endif %} />
+                                <label class="custom-control-label"
+                                    for="option{{question.question.id}}{{option.option.id}}">{{option.option.option}}
+                                    {% if option.option.is_true %}
+                                    <i class="text-success ml-1 fa fa-check"></i>
+                                    {% endif %}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}
+{% block title %}
+Results
+{% endblock %}

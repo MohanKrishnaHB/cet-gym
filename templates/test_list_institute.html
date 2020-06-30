@@ -1,0 +1,220 @@
+{% extends "nav_institute.html" %} {% block content %}
+
+<script>
+  function updateShowScore(test_id, is_true) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        // alert("sent")
+      }
+    };
+    query_string = "test_id=" + test_id + "&is_true=" + is_true;
+    xhttp.open("GET", "/test/i/show-answers?" + query_string, true);
+    xhttp.send();
+  }
+</script>
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col">
+      <div id="accordion">
+        {% for test in started_tests %}
+        <div class="card mb-2">
+          <div class="card-header">
+            <!-- <a class="card-link" data-toggle="collapse" href="#test1"> -->
+            <div class="row">
+              <a class="col card-link" data-toggle="collapse" href="#test{{test.test.id}}">
+                {{test.test.title}}
+              </a>
+              <div class="col-auto ml-auto">
+                <a class="btn btn-success btn-sm" href="/test/i/result/{{test.test.id}}">View Results</a>
+                <!-- starts at 12:00:00 -->
+              </div>
+            </div>
+            <!-- </a> -->
+          </div>
+          <div id="test{{test.test.id}}" class="collapse" data-parent="#accordion">
+            <div class="card-body">
+              <div class="row">
+                {% if test.test.description %}
+                <div class="col">
+                  {{ test.test.description }}
+                </div>
+                {% endif %}
+                <div class="w-100"></div>
+                <div class="col-12 col-md-9">
+                  <div class="row">
+                    <div class="col"><u>duration</u>: <b>{{ test.test.total_duration }}</b></div>
+                    <div class="col"><u>No. of Questions</u>: <b>{{ test.test.no_of_questions }}</b></div>
+                    <div class="w-100"></div>
+                    <div class="col-12 col-xl-6">
+                      <u>Start Time</u>: <b>{{ test.test.commence_at }}</b>
+                    </div>
+                    <div class="col-12 col-xl-6">
+                      <u>End Starting after</u>: <b>{{ test.test.stop_commenceing_after }}</b>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col-12 col-xl-6">
+                      <u>No. of students started</u>: <b>{{ test.started_students }} /
+                        {{ test.total_number_of_students }}</b>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-3 border py-2 mt-1">
+                  <div class="row">
+                    <div class="col mb-1">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="{{test.test.id}}"
+                          onchange="updateShowScore('{{test.test.id}}', this.checked)" />
+                        <label class="custom-control-label" for="{{test.test.id}}">
+                          Show score
+                        </label>
+                      </div>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                      <button class="btn btn-sm btn-outline-warning">
+                        Extened 5min for entry
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% for test in finished_tests %}
+        <div class="card mb-2">
+          <div class="card-header">
+            <!-- <a class="card-link" data-toggle="collapse" href="#test1"> -->
+            <div class="row">
+              <a class="col card-link" data-toggle="collapse" href="#test{{test.test.id}}">
+                {{test.test.title}}
+              </a>
+              <div class="col-auto ml-auto">
+                <a class="btn btn-success btn-sm" href="/test/i/result/{{test.test.id}}">View Results</a>
+                <!-- starts at 12:00:00 -->
+              </div>
+            </div>
+            <!-- </a> -->
+          </div>
+          <div id="test{{test.test.id}}" class="collapse" data-parent="#accordion">
+            <div class="card-body">
+              <div class="row">
+                {% if test.test.description %}
+                <div class="col">
+                  {{ test.test.description }}
+                </div>
+                {% endif %}
+                <div class="w-100"></div>
+                <div class="col-12 col-md-9">
+                  <div class="row">
+                    <div class="col"><u>duration</u>: <b>{{ test.test.total_duration }}</b></div>
+                    <div class="col"><u>No. of Questions</u>: <b>{{ test.test.no_of_questions }}</b></div>
+                    <div class="w-100"></div>
+                    <div class="col-12 col-xl-6">
+                      <u>Start Time</u>: <b>{{ test.test.commence_at }}</b>
+                    </div>
+                    <div class="col-12 col-xl-6">
+                      <u>End Starting after</u>: <b>{{ test.test.stop_commenceing_after }}</b>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col-12 col-xl-6">
+                      <u>No. of students attended</u>: <b>{{ test.attended_students }} /
+                        {{ test.total_number_of_students }}</b>
+                    </div>
+                    <!-- <div class="col-12 col-xl-6">
+                      <u>Avg. score</u>: <b>8</b>
+                    </div> -->
+                  </div>
+                </div>
+                <div class="col-12 col-md-3 border py-2 mt-1">
+                  <div class="row">
+                    <div class="col mb-1">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="{{test.test.id}}"
+                          onchange="updateShowScore('{{test.test.id}}', this.checked)" />
+                        <label class="custom-control-label" for="{{test.test.id}}">
+                          Show score
+                        </label>
+                      </div>
+                    </div>
+                    <div class="w-100"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% for test in yet_to_start_tests %}
+        <div class="card mb-2">
+          <div class="card-header">
+            <!-- <a class="card-link" data-toggle="collapse" href="#test1"> -->
+            <div class="row">
+              <a class="col card-link" data-toggle="collapse" href="#test{{test.test.id}}">
+                {{test.test.title}}
+              </a>
+              <div class="col-auto ml-auto">
+                <button class="btn btn-primary btn-sm px-4">Edit</button>
+                <!-- starts at 12:00:00 -->
+              </div>
+            </div>
+            <!-- </a> -->
+          </div>
+          <div id="test{{test.test.id}}" class="collapse" data-parent="#accordion">
+            <div class="card-body">
+              <div class="row">
+                {% if test.test.description %}
+                <div class="col">
+                  {{ test.test.description }}
+                </div>
+                {% endif %}
+                <div class="w-100"></div>
+                <div class="col-12 col-md-9">
+                  <div class="row">
+                    <div class="col"><u>duration</u>: <b>{{ test.test.total_duration }}</b></div>
+                    <div class="col"><u>No. of Questions</u>: <b>{{ test.test.no_of_questions }}</b></div>
+                    <div class="w-100"></div>
+                    <div class="col-12 col-xl-6">
+                      <u>Start Time</u>: <b>{{ test.test.commence_at }}</b>
+                    </div>
+                    <div class="col-12 col-xl-6">
+                      <u>End Starting after</u>: <b>{{ test.test.stop_commenceing_after }}</b>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col-12 col-xl-6">
+                      <u>No. of students</u>: <b>{{ test.total_number_of_students }}</b>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-3 border py-2 mt-1">
+                  <div class="row">
+                    <div class="col mb-1">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="{{test.test.id}}"
+                          onchange="updateShowScore('{{test.test.id}}', this.checked)" />
+                        <label class="custom-control-label" for="{{test.test.id}}">
+                          Show answers after finishing
+                        </label>
+                      </div>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                      <button class="btn btn-sm btn-outline-warning">
+                        Extened 5min for entry
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block title %}List{% endblock %}

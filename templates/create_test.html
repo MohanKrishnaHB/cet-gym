@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Test</title>
+    <!-- Latest compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+      <!-- Brand -->
+      <a class="navbar-brand" href="/">AptiGym</a>
+
+      <!-- Toggler/collapsibe Button -->
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#collapsibleNavbar"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navbar links -->
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/test/test-list">Test</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/test/test-list">Results</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container mt-3">
+      <div class="row justify-content-center">
+        <div
+          class="col-lg-6 col-md-7 col-sm-8 col-xs-10 mx-2 p-3 border rounded"
+        >
+          <div
+            class="text-center border border-top-0 border-right-0 border-left-0 mb-2"
+          >
+            <h5>Register</h5>
+          </div>
+          <div class="w-100"></div>
+          <form action="/register" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="title">Title</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter Title"
+                name="title"
+                id="title"
+                value="{% if title %}{{title}}{% endif %}"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="description">Description</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter description"
+                name="description"
+                id="description"
+                value="{% if description %}{{description}}{% endif %}"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="duration">Total Duration</label>
+              <input
+                type="time"
+                class="form-control"
+                placeholder="Enter duration"
+                name="total_duration"
+                id="duration"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="commence_at">Commence at</label>
+              <input
+                type="datetime-local"
+                class="form-control"
+                placeholder="Enter Commence time"
+                name="commence_at"
+                id="commence_at"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="stop_commencing_after">Stop Commencing after</label>
+              <input
+                type="datetime-local"
+                class="form-control"
+                name="stop_commencing_after"
+                id="stop_commencing_after"
+                required
+              />
+            </div>
+            <!-- <div class="form-group">
+                <label for="institute_code">Institute Code</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  placeholder="Enter Institute Code"
+                  name="institute_code"
+                  id="institute_code"
+                />
+              </div> -->
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

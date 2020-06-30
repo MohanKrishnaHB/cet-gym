@@ -1,0 +1,83 @@
+{% extends "nav_student.html" %} {% block content %}
+<div class="container mt-5">
+  <div class="row">
+    <div class="col">
+      <div class="table-responsive-sm">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Test</th>
+              <th>Duration</th>
+              <th>No. Of Questions</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for test in started_tests %}
+            <tr>
+              <td>{{test.title}}</td>
+              <td>
+                {{ test.total_duration|date:'H:i:s' }}
+              </td>
+              <td>{{test.no_of_questions}}</td>
+              <td>
+                <a class="btn btn-primary btn-sm" href="/test/{{test.id}}">
+                  Start Test
+                </a>
+              </td>
+            </tr>
+            {% endfor %} {% if yet_to_start_tests %}
+            <tr class="table-primary">
+              <th colspan="4" class="text-center">Assigned tests</th>
+            </tr>
+            {% for test in yet_to_start_tests %}
+            <tr>
+              <td>{{test.title}}</td>
+              <td>
+                {{ test.total_duration|date:'H:i:s' }}
+              </td>
+              <td>{{test.no_of_questions}}</td>
+              <td>Starts at <strong>{{test.commence_at}}</strong></td>
+            </tr>
+            {% endfor %} {% endif %} {% if finished_tests %}
+            <tr class="table-success">
+              <th colspan="4" class="text-center">Finished tests</th>
+            </tr>
+            {% for test in finished_tests %}
+            <tr>
+              <td>{{test.title}}</td>
+              <td>
+                {{ test.total_duration|date:'H:i:s' }}
+              </td>
+              <td>{{test.no_of_questions}}</td>
+              {% if test.show_result or test.show_score %}
+              <td>
+                <a class="btn btn-success btn-sm" href="/test/result/{{test.id}}">View Results</a>
+              </td>
+              {% else %}
+              <td>Results not yet released</td>
+              {% endif %}
+            </tr>
+            {% endfor %} {% endif %} {% if missed_tests %}
+            <tr class="table-danger">
+              <th colspan="4" class="text-center">missed tests</th>
+            </tr>
+            {% for test in missed_tests %}
+            <tr>
+              <td>{{test.title}}</td>
+              <td>
+                {{ test.total_duration|date:'H:i:s' }}
+              </td>
+              <td>{{test.no_of_questions}}</td>
+              <td>
+                Missed at <strong>{{test.stop_commenceing_after}}</strong>
+              </td>
+            </tr>
+            {% endfor %} {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block title %}List{% endblock %}

@@ -1,0 +1,184 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script>
+        let duration = {};
+        let timeComponent = {};
+        let interval = {};
+
+        const getPrintableTimeFormat = () => {
+            let time = duration.hr < 10 ? "0" : "";
+            time += duration.hr + ":";
+            time += duration.min < 10 ? "0" : "";
+            time += duration.min + ":";
+            time += duration.sec < 10 ? "0" : "";
+            time += duration.sec;
+            return time;
+        };
+
+        const updateDuration = () => {
+            timeComponent.innerHTML = getPrintableTimeFormat(duration);
+            let sec = duration.sec - 1;
+            let min = duration.min;
+            let hr = duration.hr;
+            if (sec <= -1) {
+                sec = 59;
+                min = min - 1;
+                if (min <= -1) {
+                    min = 59;
+                    hr = hr - 1;
+                    if (hr <= 0) {
+                        clearInterval(interval);
+                        window.location.href = '/test/finish/{{ student_test_id }}';
+                    }
+                }
+            };
+            duration = { hr, min, sec };
+        };
+
+        function onLoad(d) {
+            duration = d;
+            interval = setInterval(updateDuration, 1000);
+            timeComponent = document.getElementById("timer");
+        }
+
+        function setOption(is_checked, sq_id, option_id) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    // alert("sent")
+                }
+            };
+            query_string = "student_question_id=" + sq_id + "&option_id=" + option_id + "&is_marked=" + is_checked;
+            xhttp.open("GET", "/test/set-option?" + query_string, true);
+            xhttp.send();
+        }
+    </script>
+    <script src="{% static "js/myjs.js" %}"></script>
+    <style>
+        #sideNav {
+            max-height: 100%;
+            overflow: auto;
+        }
+    </style>
+</head>
+
+<body onload="onLoad({'hr': {{duration.hr}}, 'min': {{duration.min}},'sec': {{duration.sec}},})">
+    <nav class="navbar bg-dark navbar-dark">
+        <!-- Brand -->
+        <a class="navbar-brand">Test - 1</a>
+        <!-- Navbar links -->
+        <div class="">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" id="timer">{{duration.hr}}:{{duration.min}}:{{duration.sec}}</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row mr-lg-1">
+            <div class="col-12 col-md-3 col-xl-2 p-0" id="sideNav">
+                <nav class="navbar navbar-expand-md navbar-light bg-light border">
+                    <div class="d-md-none">Questions</div>
+                    <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse"
+                        data-target="#sideNavQuestions" aria-controls="sideNavQuestions" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse border" id="sideNavQuestions">
+                        <!-- Nav tabs -->
+                        <ul class="w-100 nav nav-pills nav-justified flex-column">
+                            {% for question in questions %}
+                            <li class="nav-item">
+                                <a class="nav-link {% if forloop.first %}active{% endif %}" data-toggle="tab"
+                                    href="#question{{forloop.counter}}">Question {{ forloop.counter }}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+
+                    </div>
+                </nav>
+            </div>
+            <main class="col-12 col-md-9 col-xl-9 py-md-3 pl-md-5 bd-content mx-2">
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    {% for question in questions %}
+                    {% with q_index=forloop.counter %}
+                    <div class="tab-pane container {% if forloop.first %}active{% endif %}"
+                        id="question{{forloop.counter}}">
+                        <div class="row border rounded py-1">
+                            <div class="col">
+                                <div>{{question.question.question}}</div>
+                                {% if question.question.question_image %}
+                                <div>
+                                    <img src="/uploads/{{question.question.question_image}}" class=""
+                                        alt="Cinque Terre">
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row my-2 border rounded py-2">
+                            <div class="col">
+                                {% if question.question.has_multiple_answers %}
+                                {% for option in question.options %}
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input"
+                                        id="option{{q_index}}{{forloop.counter}}" name="question{{q_index}}"
+                                        value="customEx"
+                                        onchange="setOption(this.checked, {{question.sq_id}}, {{option.id}})">
+                                    <label class="custom-control-label"
+                                        for="option{{q_index}}{{forloop.counter}}">{{option.option}}</label>
+                                </div>
+                                {% endfor %}
+                                {% else %}
+                                {% for option in question.options %}
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input"
+                                        id="option{{q_index}}{{forloop.counter}}" name="question{{q_index}}"
+                                        value="customEx"
+                                        onchange="setOption(this.checked, {{question.sq_id}}, {{option.id}})">
+                                    <label class="custom-control-label"
+                                        for="option{{q_index}}{{forloop.counter}}">{{option.option}}
+                                        {% if option.image %}
+                                        <img src="/uploads/{{option.image}}" alt="">
+                                        {% endif %}
+                                    </label>
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% if forloop.last %}
+                        <div class="row">
+                            <div class="col-auto ml-auto">
+                                <a class="btn btn-success" href="/test/finish/{{student_test_id}}">Submit</a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endwith %}
+                    {% endfor %}
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+
+</html>
