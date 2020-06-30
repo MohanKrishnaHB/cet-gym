@@ -128,8 +128,7 @@
                                 <div>{{question.question.question}}</div>
                                 {% if question.question.question_image %}
                                 <div>
-                                    <img src="/uploads/{{question.question.question_image}}" class=""
-                                        alt="Cinque Terre">
+                                    <img src="/uploads/{{question.question.question_image}}" class="img-fluid">
                                 </div>
                                 {% endif %}
                             </div>
@@ -157,7 +156,7 @@
                                     <label class="custom-control-label"
                                         for="option{{q_index}}{{forloop.counter}}">{{option.option}}
                                         {% if option.image %}
-                                        <img src="/uploads/{{option.image}}" alt="">
+                                        <img class="img-fluid" src="/uploads/{{option.image}}" alt="">
                                         {% endif %}
                                     </label>
                                 </div>

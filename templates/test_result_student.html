@@ -28,7 +28,7 @@
         <div class="card-body">
             {% for option in question.options %}
             <div class="row mb-1">
-                <div class="col-12 col-xl-3 border">
+                <div class="col-12 col-xl-3 border rounded">
                     <div class="row">
                         <div class="col-auto align-self-center">
                             <div class="custom-control custom-radio">
@@ -47,7 +47,7 @@
                         </div>
                         {% if option.option.image %}
                         <div class="col-auto">
-                            <img src="/uploads/{{option.option.image}}" alt="">
+                            <img class="img-fluid" src="/uploads/{{option.option.image}}" alt="">
                         </div>
                         {% endif %}
                     </div>

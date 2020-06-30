@@ -54,18 +54,34 @@
                         </div>
                         <div class="card-body">
                             {% for option in question.options %}
-                            <div class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input"
-                                    id="option{{question.question.id}}{{option.option.id}}"
-                                    name="s{{student.student.id}}q{{question.question.id}}o{{option.option.id}}"
-                                    value="customEx" disabled {% if option.is_marked %} checked {% endif %} />
-                                <label class="custom-control-label"
-                                    for="option{{question.question.id}}{{option.option.id}}">{{option.option.option}}
-                                    {% if option.option.is_true %}
-                                    <i class="text-success ml-1 fa fa-check"></i>
-                                    {% endif %}
-                                </label>
+                            <div class="row mb-1">
+                                <div class="col-12 col-xl-3 border rounded">
+                                    <div class="row">
+                                        <div class="col-auto align-self-center">
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" class="custom-control-input"
+                                                    id="option{{question.question.id}}{{option.option.id}}"
+                                                    name="q{{question.question.id}}o{{option.option.id}}"
+                                                    value="customEx" disabled {% if option.is_marked %} checked
+                                                    {% endif %} />
+                                                <label class="custom-control-label"
+                                                    for="option{{question.question.id}}{{option.option.id}}">
+                                                    {{option.option.option}}
+                                                    {% if option.option.is_true %}
+                                                    <i class="text-success ml-1 fa fa-check"></i>
+                                                    {% endif %}
+                                                </label>
+                                            </div>
+                                        </div>
+                                        {% if option.option.image %}
+                                        <div class="col-auto">
+                                            <img class="img-fluid" src="/uploads/{{option.option.image}}" alt="">
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
                             </div>
+
                             {% endfor %}
                         </div>
                     </div>
