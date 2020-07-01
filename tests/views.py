@@ -320,10 +320,13 @@ def createTest(request):
                 questions = questions.split(',')
                 test = Test(title=title, description=description, no_of_questions=len(questions), total_duration=total_duration, commence_at=commence_at, stop_commenceing_after=stop_commencing_after)
                 test.save()
-                for question in questions:
-                    question_obj = Question.objects.get(id=int(question))
-                    test_question = TestQuestions(test=test, question=question_obj)
-                    test_question.save()
+                try:
+                    for question in questions:
+                        question_obj = Question.objects.get(id=int(question))
+                        test_question = TestQuestions(test=test, question=question_obj)
+                        test_question.save()
+                except:
+                    print("Questions not selected")
                 students = Student.objects.all()
                 for student in students:
                     student_test = StudentTest(test=test, student=student)
