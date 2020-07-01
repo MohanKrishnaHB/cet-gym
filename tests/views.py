@@ -30,6 +30,10 @@ def testList(request):
                     finished_tests.append(test.test)
                 elif test.test.commence_at.isoformat() < now and test.test.stop_commenceing_after.isoformat() > now and test.status == "not_attended":
                     started_tests.append(test.test)
+                elif test.end_at.isoformat() < datetime.utcnow().isoformat() and test.status == "attending":
+                    test.status="finished"
+                    test.save()
+                    finished_tests.append(test.test)
                 elif test.status == "attending":
                     attending_tests.append(test.test)
             return_obj = {
@@ -79,7 +83,7 @@ def startTest(student_test):
         student_test.end_at = datetime.now() + timedelta(hours=hr, minutes=min, seconds=sec+10)
         duration = getTimeObj(test.total_duration)
     elif student_test.end_at.isoformat() < datetime.utcnow().isoformat():
-        duration = {"hr": 0, "min": 0, "sec": 0}
+        duration = False
     elif student_test.status == "attending":
         format = "%Y-%m-%d %H:%M:%S.%f"
         end_at_formated = student_test.end_at.strftime(format)
@@ -148,6 +152,10 @@ def test(request, test_id):
                     return render(request, "test.html", {"duration": duration, "questions": questions, 'test': test, 'student_test_id':student_test.id})
                 if student_test.status == "attending":
                     questions, duration = startTest(student_test)
+                    if duration == False:
+                        student_test.status="finished"
+                        student_test.save()
+                        return redirect("/test/test-list")
                     return render(request, "test.html", {"student": student, "duration": duration, "questions": questions, 'test': test, 'student_test_id':student_test.id})
                 return redirect('/test/test-list')
         else:

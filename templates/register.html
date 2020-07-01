@@ -88,8 +88,9 @@
           </div>
           <div class="form-group">
             <label for="phone">Phone Number</label>
-            <input type="text" class="form-control" placeholder="Enter Phone Number" name="phone_number" id="phone"
-              value="{% if phone_number %}{{phone_number}}{% endif %}" required />
+            <input type="tel" class="form-control" placeholder="Enter Phone Number" name="phone_number" id="phone"
+              value="{% if phone_number %}{{phone_number}}{% endif %}"
+              pattern="[5-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]" required />
             {% if phone_number_exists %}
             <div>
               <small class="text-danger">Phone Number already exists, <a href="/log-in">log-in</a></small>
@@ -102,8 +103,8 @@
               value="{% if name %}{{name}}{% endif %}" required />
           </div>
           <div class="form-group">
-            <label for="reg_number">Reg. No.</label>
-            <input type="text" class="form-control" placeholder="Enter PUC Registration number" name="reg_no"
+            <label for="reg_number">CET No.</label>
+            <input type="text" class="form-control" placeholder="Enter CET No." name="reg_no"
               value="{% if reg_no %}{{reg_no}}{% endif %}" id="reg_number" />
           </div>
           <div class="form-group">
