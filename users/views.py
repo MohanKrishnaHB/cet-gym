@@ -89,7 +89,7 @@ def hello(request):
         email = request.session['student']
         if Student.objects.filter(email=email).exists():
             student = Student.objects.filter(email=email)[0]
-            return redirect("/test-list")
+            return redirect("/test/test-list")
         else:
             return redirect('/log-in')
     if request.session.get('institute', False):
