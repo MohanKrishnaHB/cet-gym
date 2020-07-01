@@ -34,6 +34,7 @@
     body {
       background-image: url("/uploads/images/background/background.jpeg");
       background-color: #cccccc;
+      background-position: center center;
       /* background-repeat: no-repeat; */
       background-size: cover;
     }
@@ -120,7 +121,7 @@
           </div>
           <div class="form-group">
             <label for="puc_college">PUC College</label>
-            <input type="text" class="form-control" placeholder="Enter PUC college name you stadied" name="puc_college"
+            <input type="text" class="form-control" placeholder="Enter PUC college you studied" name="puc_college"
               value="{% if puc_college %}{{puc_college}}{% endif %}" id="puc_college" required />
           </div>
           <div class="form-group">
