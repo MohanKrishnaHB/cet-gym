@@ -30,17 +30,46 @@
       }
     }
   </script>
+  <style>
+    body {
+      background-image: url("/uploads/images/background/background.jpeg");
+      background-color: #cccccc;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .register-panel {
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+    }
+  </style>
 </head>
 
 <body>
   <div class="container">
-    <div class="row mt-3 justify-content-center">
-      <div class="col-suto">
-        <h2>MITM Tests</h2>
+    <div class="row mt-3 justify-content-between">
+      <div class="col-auto text-light text-center d-none d-lg-block">
+        <h4>CET Code: 158</h4>
+      </div>
+      <div class="col-auto text-light text-center">
+        <h2>MITM CET Mock Tests</h2>
+      </div>
+      <div class="col-auto text-light text-center d-none d-lg-block">
+        <h4>COMEDK Code: E078</h4>
       </div>
     </div>
-    <div class="row mt-2 justify-content-center">
-      <div class="col-lg-6 col-md-7 col-sm-8 col-xs-10 mx-2 p-3 border rounded">
+    <div class="d-lg-none">
+      <div class="row justify-content-between">
+        <div class="col-auto text-light text-center">
+          <h4>CET Code: 158</h4>
+        </div>
+        <div class="col-auto text-light">
+          <h4>CET Code: 158</h4>
+        </div>
+      </div>
+    </div>
+    <div class="row my-2 justify-content-center">
+      <div class="col-lg-6 col-md-7 col-sm-8 col-xs-10 mx-2 p-3 border rounded register-panel">
         <div class="text-center border border-top-0 border-right-0 border-left-0 mb-2">
           <h5>Register</h5>
         </div>
@@ -109,6 +138,8 @@
               />
             </div> -->
           <button id="submit_button" type="submit" class="btn btn-primary" disabled>Submit</button>
+          <div class="w-100"></div>
+          <a class="btn btn-link btn-sm" href="/log-in">Log-in</a>
         </form>
       </div>
     </div>

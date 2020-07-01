@@ -457,3 +457,15 @@ def resultStudent(request, test_id):
             return redirect('/log-in')
     else:
         return redirect('/log-in')
+
+def instructions(request, test_id):
+    if request.session.get('student', False):
+        email = request.session['student']
+        if Student.objects.filter(email=email).exists():
+            student = Student.objects.filter(email=email)[0]
+            test = Test.objects.get(id=test_id)
+            return render(request, "instruction.html", {"test": test})
+        else:
+            return redirect('/log-in')
+    else:
+        return redirect('/log-in')
