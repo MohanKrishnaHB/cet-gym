@@ -148,18 +148,29 @@
                                 {% endfor %}
                                 {% else %}
                                 {% for option in question.options %}
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input"
-                                        id="option{{q_index}}{{forloop.counter}}" name="question{{q_index}}"
-                                        value="customEx"
-                                        onchange="setOption(this.checked, {{question.sq_id}}, {{option.id}})">
-                                    <label class="custom-control-label"
-                                        for="option{{q_index}}{{forloop.counter}}">{{option.option}}
-                                        {% if option.image %}
-                                        <img class="img-fluid" src="/uploads/{{option.image}}" alt="">
-                                        {% endif %}
-                                    </label>
+                                <div class="row mb-1 ml-1">
+                                    <div class="col-12 col-xl-3 border rounded">
+                                        <div class="row">
+                                            <div class="col-auto align-self-center">
+                                                <div class="custom-control custom-radio">
+                                                    <input type="radio" class="custom-control-input"
+                                                        id="option{{q_index}}{{forloop.counter}}"
+                                                        name="question{{q_index}}" value="customEx"
+                                                        onchange="setOption(this.checked, {{question.sq_id}}, {{option.id}})">
+                                                    <label class="custom-control-label"
+                                                        for="option{{q_index}}{{forloop.counter}}">{{option.option}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            {% if option.image %}
+                                            <div class="col-auto">
+                                                <img class="img-fluid" src="/uploads/{{option.image}}" alt="">
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
                                 </div>
+
                                 {% endfor %}
                                 {% endif %}
                             </div>

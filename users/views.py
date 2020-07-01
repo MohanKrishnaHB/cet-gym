@@ -103,7 +103,7 @@ def studentList(request):
         if Institute.objects.filter(email=email).exists():
             institute = Institute.objects.filter(email=email)[0]
             students = Student.objects.all()
-            return render(request, "students.html", {"students": students})
+            return render(request, "students.html", {"students": students, "institute": institute})
         else:
             return redirect('/log-in')
     else:
