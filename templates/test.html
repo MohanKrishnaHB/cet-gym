@@ -69,6 +69,13 @@
             xhttp.open("GET", "/test/set-option?" + query_string, true);
             xhttp.send();
         }
+
+        function changeQuestion(hide_id, show_id) {
+            document.getElementById(hide_id).classList.remove("active");
+            document.getElementById("a" + hide_id).classList.remove("active");
+            document.getElementById(show_id).classList.add("active");
+            document.getElementById("a" + show_id).classList.add("active");
+        }
     </script>
     <!-- <script src="{% static "js/myjs.js" %}"></script> -->
     <style>
@@ -177,13 +184,25 @@
                                 {% endif %}
                             </div>
                         </div>
-                        {% if forloop.last %}
                         <div class="row">
+                            {% if not forloop.first %}
+                            <div class="col-auto">
+                                <button class="btn btn-secondary"
+                                    onclick='changeQuestion("question{{forloop.counter}}", "question{{forloop.counter|add:"-1"}}")'>Previous</button>
+                            </div>
+                            {% endif %}
+                            {% if forloop.last %}
                             <div class="col-auto ml-auto">
                                 <a class="btn btn-success" href="/test/finish/{{student_test_id}}">Submit</a>
                             </div>
+                            {% endif %}
+                            {% if not forloop.last %}
+                            <div class="col-auto ml-auto">
+                                <button class="btn btn-primary"
+                                    onclick='changeQuestion("question{{forloop.counter}}", "question{{forloop.counter|add:"1"}}")'>Next</button>
+                            </div>
+                            {% endif %}
                         </div>
-                        {% endif %}
                     </div>
                     {% endwith %}
                     {% endfor %}
