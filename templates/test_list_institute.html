@@ -44,7 +44,7 @@
                 <div class="w-100"></div>
                 <div class="col-12 col-md-9">
                   <div class="row">
-                    <div class="col"><u>duration</u>: <b>{{ test.test.total_duration }}</b></div>
+                    <div class="col"><u>duration</u>: <b>{{ test.test.total_duration|date:'H:i:s' }}</b></div>
                     <div class="col"><u>No. of Questions</u>: <b>{{ test.test.no_of_questions }}</b></div>
                     <div class="w-100"></div>
                     <div class="col-12 col-xl-6">

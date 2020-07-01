@@ -70,7 +70,7 @@
             xhttp.send();
         }
     </script>
-    <script src="{% static "js/myjs.js" %}"></script>
+    <!-- <script src="{% static "js/myjs.js" %}"></script> -->
     <style>
         #sideNav {
             max-height: 100%;
@@ -108,7 +108,8 @@
                             {% for question in questions %}
                             <li class="nav-item">
                                 <a class="nav-link {% if forloop.first %}active{% endif %}" data-toggle="tab"
-                                    href="#question{{forloop.counter}}">Question {{ forloop.counter }}</a>
+                                    href="#question{{forloop.counter}}" id="aquestion{{forloop.counter}}">Question
+                                    {{ forloop.counter }}</a>
                             </li>
                             {% endfor %}
                         </ul>
@@ -141,9 +142,9 @@
                                     <input type="checkbox" class="custom-control-input"
                                         id="option{{q_index}}{{forloop.counter}}" name="question{{q_index}}"
                                         value="customEx"
-                                        onchange="setOption(this.checked, {{question.sq_id}}, {{option.id}})">
+                                        onchange="setOption(this.checked, {{question.sq_id}}, {{option.option.id}})">
                                     <label class="custom-control-label"
-                                        for="option{{q_index}}{{forloop.counter}}">{{option.option}}</label>
+                                        for="option{{q_index}}{{forloop.counter}}">{{option.option.option}}</label>
                                 </div>
                                 {% endfor %}
                                 {% else %}
@@ -156,15 +157,16 @@
                                                     <input type="radio" class="custom-control-input"
                                                         id="option{{q_index}}{{forloop.counter}}"
                                                         name="question{{q_index}}" value="customEx"
-                                                        onchange="setOption(this.checked, {{question.sq_id}}, {{option.id}})">
+                                                        onchange="setOption(this.checked, {{question.sq_id}}, {{option.option.id}})"
+                                                        {% if option.is_marked %}checked{% endif %}>
                                                     <label class="custom-control-label"
-                                                        for="option{{q_index}}{{forloop.counter}}">{{option.option}}
+                                                        for="option{{q_index}}{{forloop.counter}}">{{option.option.option}}
                                                     </label>
                                                 </div>
                                             </div>
-                                            {% if option.image %}
+                                            {% if option.option.image %}
                                             <div class="col-auto">
-                                                <img class="img-fluid" src="/uploads/{{option.image}}" alt="">
+                                                <img class="img-fluid" src="/uploads/{{option.option.image}}" alt="">
                                             </div>
                                             {% endif %}
                                         </div>

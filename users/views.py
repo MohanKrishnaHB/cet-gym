@@ -75,6 +75,9 @@ def register(request):
 def logOut(request):
     try:
         del request.session['student']
+    except:
+        pass
+    try:
         del request.session['institute']
     except KeyError:
         pass
@@ -86,9 +89,11 @@ def hello(request):
         email = request.session['student']
         if Student.objects.filter(email=email).exists():
             student = Student.objects.filter(email=email)[0]
-            return render(request, "index.html", {"name": student.name})
+            return redirect("/test-list")
         else:
             return redirect('/log-in')
+    if request.session.get('institute', False):
+        return redirect("/test/i/test-list")
     else:
         return redirect('/log-in')
 

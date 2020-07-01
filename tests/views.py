@@ -60,31 +60,79 @@ def getTimeObj(dt):
     sec = dt.strftime('%S')
     return {'hr': hr, 'min': min, 'sec': sec}
 
+def getTimeObjTimeDelta(dt):
+    total_sec = int(dt.seconds)
+    sec = total_sec%60
+    total_min = int(total_sec/60)
+    hr = int(total_min/60)
+    min = total_min%60
+    return {'hr': hr, 'min': min, 'sec': sec}
+
 def startTest(student_test):
     test = student_test.test
     duration = getTimeObj(test.total_duration)
-    if not student_test.end_at and student_test.status == "not_attended":
+    # if not student_test.end_at and student_test.status == "not_attended":
+    if student_test.status == "not_attended":
         hr = int(test.total_duration.strftime('%H'))
         min = int(test.total_duration.strftime('%M'))
         sec = int(test.total_duration.strftime('%S'))
         student_test.end_at = datetime.now() + timedelta(hours=hr, minutes=min, seconds=sec+10)
         duration = getTimeObj(test.total_duration)
+    elif student_test.end_at.isoformat() < datetime.utcnow().isoformat():
+        duration = {"hr": 0, "min": 0, "sec": 0}
+    elif student_test.status == "attending":
+        format = "%Y-%m-%d %H:%M:%S.%f"
+        end_at_formated = student_test.end_at.strftime(format)
+        end_at_datetime = datetime.strptime(end_at_formated, format)
+        datetime_now_formated = datetime.now().strftime(format)
+        datetime_now_datetime = datetime.strptime(datetime_now_formated, format)
+        d = end_at_datetime - datetime_now_datetime
+        duration = getTimeObjTimeDelta(d)
     student_test.status = 'attending'
     student_test.save()
     test_questions = test.questions.all()
-    questions = []
+    # questions = []
     for test_question in test_questions:
         try:
             sq = StudentQuestion(student_test=student_test, question_test=test_question)
             sq.save()
         except:
             sq = StudentQuestion.objects.filter(student_test=student_test, question_test=test_question)[0]
-        temp = {
-            'question': test_question.question,
-            'sq_id': sq.id,
-            'options': test_question.question.options.all()
-        }
-        questions.append(temp)
+        # temp = {
+        #     'question': test_question.question,
+        #     'sq_id': sq.id,
+        #     'options': test_question.question.options.all()
+        # }
+        # questions.append(temp)
+    
+    student_questions = StudentQuestion.objects.filter(student_test=student_test)
+    questions = []
+    for student_question in student_questions:
+        # print("question:", student_question.question_test.question)
+        options = []
+        question_options = student_question.question_test.question.options.all()
+        student_options = student_question.option.all()
+        is_correct = False
+        for option in question_options:
+            # print("option:", option.option)
+            is_marked = False
+            for student_option in student_options:
+                # print("student option:", student_option.option.option)
+                if option.id == student_option.option.id:
+                    # print("marked")
+                    is_marked = True
+                    # print(option.is_true)
+            options.append({
+                "option": option,
+                "is_marked": is_marked
+            })
+        if is_correct:
+            score += 1
+        questions.append({
+            "question": student_question.question_test.question,
+            "sq_id": student_question.id,
+            "options": options
+        })
     return questions, duration
 
 def test(request, test_id):

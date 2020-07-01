@@ -26,7 +26,23 @@
                 </a>
               </td>
             </tr>
-            {% endfor %} {% if yet_to_start_tests %}
+            {% endfor %}
+            {% for test in attending_tests %}
+            <tr>
+              <td>{{test.title}}</td>
+              <td>
+                {{ test.total_duration|date:'H:i:s' }}
+              </td>
+              <td>{{test.no_of_questions}}</td>
+              <td>
+                <a class="btn btn-primary btn-sm" href="/test/{{test.id}}">
+                  Resume Test
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+
+            {% if yet_to_start_tests %}
             <tr class="table-primary">
               <th colspan="4" class="text-center">Assigned tests</th>
             </tr>
