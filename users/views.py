@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from .models import Student, Institute
 from tests.models import StudentTest
 from datetime import datetime
+import sendgrid
+import os
+from sendgrid.helpers.mail import *
 
 
 def logIn(request):
@@ -113,3 +116,17 @@ def studentList(request):
             return redirect('/log-in')
     else:
         return redirect('/log-in')
+
+def sendEmail(request):
+    try:
+        sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
+        from_email = Email("mohankrishnahb@gmail.com")
+        subject = "Hello World from the SendGrid Python Library!"
+        to_email = Email("mohankrishnahb@gmail.com")
+        content = Content("text/plain", "Hello, Email!")
+        mail = Mail(from_email, subject, to_email, content)
+        response = sg.client.mail.send.post(request_body=mail.get())
+        return redirect("/log-in")
+    except:
+        return redirect("/register")
+    
