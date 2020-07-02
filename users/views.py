@@ -8,23 +8,23 @@ def logIn(request):
     if request.method == "GET":
         return render(request, "login.html")
     if request.method == "POST":
-        email = request.POST['email']
+        phone_number = request.POST['phone_number']
         password = request.POST['password']
-        if Student.objects.filter(email=email).exists():
-            student = Student.objects.filter(email=email)[0]
+        if Student.objects.filter(phone_number=phone_number).exists():
+            student = Student.objects.filter(phone_number=phone_number)[0]
             if student.password == password:
-                request.session['student'] = student.email
+                request.session['student'] = student.phone_number
                 return redirect('/test/test-list')
             else:
-                return_obj = {"isPasswordInvalid": True, "email": email}
+                return_obj = {"isPasswordInvalid": True, "email": phone_number}
                 return render(request, "login.html", return_obj)
-        if Institute.objects.filter(email=email).exists():
-            institute = Institute.objects.filter(email=email)[0]
+        if Institute.objects.filter(phone_number=phone_number).exists():
+            institute = Institute.objects.filter(phone_number=phone_number)[0]
             if institute.password == password:
                 request.session['institute'] = institute.email
                 return redirect('/test/i/test-list')
             else:
-                return_obj = {"isPasswordInvalid": True, "email": email}
+                return_obj = {"isPasswordInvalid": True, "email": phone_number}
                 return render(request, "login.html", return_obj)
         else:
             return_obj = {"isEmailInvalid": True}
@@ -50,9 +50,9 @@ def register(request):
         preffered_branch = request.POST['preffered_branch']
         # institute_code = request.POST['institute_code']
         institute_code = Institute.objects.all()[0].institute_code
-        if Student.objects.filter(email=email).exists():
-            return_obj = {"email_exists": True, "email": email,"phone_number":phone_number, "name": name, "reg_no": reg_no, "puc_college":puc_college, "preffered_branch":preffered_branch}
-            return render(request, "register.html", return_obj)
+        # if Student.objects.filter(email=email).exists():
+        #     return_obj = {"email_exists": True, "email": email,"phone_number":phone_number, "name": name, "reg_no": reg_no, "puc_college":puc_college, "preffered_branch":preffered_branch}
+        #     return render(request, "register.html", return_obj)
         if Student.objects.filter(phone_number=phone_number).exists():
             return_obj = {"phone_number_exists": True, "email": email,"phone_number":phone_number, "name": name, "reg_no": reg_no, "puc_college":puc_college, "preffered_branch":preffered_branch}
             return render(request, "register.html", return_obj)
@@ -86,9 +86,9 @@ def logOut(request):
 
 def hello(request):
     if request.session.get('student', False):
-        email = request.session['student']
-        if Student.objects.filter(email=email).exists():
-            student = Student.objects.filter(email=email)[0]
+        phone_number = request.session['student']
+        if Student.objects.filter(phone_number=phone_number).exists():
+            student = Student.objects.filter(phone_number=phone_number)[0]
             return redirect("/test/test-list")
         else:
             return redirect('/log-in')

@@ -35,10 +35,23 @@
                     <li class="list-group-item">{{test.title}}</li>
                     <li class="list-group-item">Test Duration: {{test.total_duration|date:"H:i:s"}}</li>
                     <li class="list-group-item">Number of questions: {{test.no_of_questions}}</li>
-
-                    <li class="list-group-item">When test is started, submission time will be fixed and you can resume
-                        the test within that time</li>
-                    <li class="list-group-item">After the duration it will be auto submitted</li>
+                    <li class="list-group-item">
+                        1. The clock will be set at the server.
+                        The countdown timer will be at the right top corner displaying remaining time.
+                        When the timer reaches zero the test will be submited by itself.
+                    </li>
+                    <li class="list-group-item">
+                        2. In case you exit out of the test, you can resume and submit within end time(i.e., if you
+                        start test at 10:00am and the duration is 00:30:00, you have to end the test within 10:30am)
+                    </li>
+                    <li class="list-group-item">
+                        3. The question menu will be at the top, you can navigate through questions.
+                        You can navigate through next and previous questions by the buttons provided after each
+                        question.
+                    </li>
+                    <li class="list-group-item">
+                        4. The options you mark will be saved automatically.
+                    </li>
                 </ol>
             </div>
             <div class="w-100"></div>

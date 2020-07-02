@@ -1,0 +1,191 @@
+{% extends "nav_institute.html" %} {% block content %}
+
+<div class="container mt-3">
+  <div class="row">
+    <div class="col mb-2">
+      <div id="category">
+        {% for category in categories %}
+        <div class="card">
+          <div class="card-header">
+            <div class="row">
+              <a class="col card-link" data-toggle="collapse" href="#category{{category.id}}">
+                {{category.title}}
+              </a>
+            </div>
+          </div>
+          <div id="category{{category.id}}" class="collapse" data-parent="#category">
+            <div class="card-body">
+              <div id="subcategory{{category.id}}">
+                {% for subcategory in category.sub_categories %}
+                <div class="card">
+                  <div class="card-header">
+                    <div class="row">
+                      <a class="col card-link" data-toggle="collapse"
+                        href="#subcategory{{category.id}}{{subcategory.id}}">
+                        {{subcategory.title}}
+                      </a>
+                      <div class="col-auto ml-auto">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                          data-target="#subcat{{subcategory.id}}modal">
+                          Add Question
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="subcategory{{category.id}}{{subcategory.id}}" class="collapse"
+                    data-parent="#subcategory{{category.id}}">
+                    <div class="card-body">
+                      <div id="questions">
+                        {% for question in subcategory.questions %}
+                        <div class="card mb-2">
+                          <div class="card-header">
+                            <div class="row">
+                              <div class="col">
+                                {{question.question}}
+                                <div class="w-100"></div>
+                                <img class="img-fluid" src="/uploads/{{question.image}}" alt="">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="card-body">
+                            {% for option in question.options %}
+                            <div class="custom-control custom-radio">
+                              <input type="radio" class="custom-control-input" id="option{{question.id}}{{option.id}}"
+                                name="{{question.id}}" value="customEx" disabled {% if option.is_true %} checked
+                                {% endif %} />
+                              <label class="custom-control-label"
+                                for="option{{question.id}}{{option.id}}">{{option.option}}</label>
+                            </div>
+                            {% endfor %}
+                          </div>
+                        </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Modals -->
+  {% for category in categories %}
+  {% for subcategory in category.sub_categories %}
+  <div class="modal" id="subcat{{subcategory.id}}modal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <form action="" method="POST">
+          <input type="hidden" value="{{subcategory.id}}" name="category" />
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Add Question</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <div class="row">
+              <div class="col">
+                Category: {{category.title}} | {{subcategory.title}}
+              </div>
+            </div>
+            <div class="form-group mb-1 mt-2">
+              <!-- <label for="question">Question</label> -->
+              <input type="text" name="question" class="form-control" placeholder="Enter Question" id="question">
+            </div>
+            <div class="custom-file mb-3">
+              <input type="file" class="custom-file-input" id="customFile" name="questionimage">
+              <label class="custom-file-label" for="customFile">Choose Question image</label>
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" id="customRadio1" name="option" value="option1">
+                    <label class="custom-control-label" for="customRadio1"> </label>
+                  </div>
+                </div>
+              </div>
+              <input type="text" name="option1" class="form-control" placeholder="Option 1" required>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="customFile" name="option1image">
+                <label class="custom-file-label" for="customFile">Choose image</label>
+              </div>
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" id="customRadio2" name="option" value="option2">
+                    <label class="custom-control-label" for="customRadio2"> </label>
+                  </div>
+                </div>
+              </div>
+              <input type="text" name="option2" class="form-control" placeholder="Option 2" required>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="customFile" name="option2image">
+                <label class="custom-file-label" for="customFile">Choose image</label>
+              </div>
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" id="customRadio3" name="option" value="option3">
+                    <label class="custom-control-label" for="customRadio3"> </label>
+                  </div>
+                </div>
+              </div>
+              <input type="text" name="option3" class="form-control" placeholder="Option 3" required>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="customFile" name="option3image">
+                <label class="custom-file-label" for="customFile">Choose image</label>
+              </div>
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" id="customRadio4" name="option" value="option4">
+                    <label class="custom-control-label" for="customRadio4"> </label>
+                  </div>
+                </div>
+              </div>
+              <input type="text" name="option4" class="form-control" placeholder="Option 4" required>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="customFile" name="option4image">
+                <label class="custom-file-label" for="customFile">Choose image</label>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Add</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          </div>
+
+
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  {% endfor %}
+  <script>
+    // Add the following code if you want the name of the file appear on select
+    $(".custom-file-input").on("change", function () {
+      var fileName = $(this).val().split("\\").pop();
+      $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+  </script>
+</div>
+
+{% endblock %} {% block title %}Questions{% endblock %}

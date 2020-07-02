@@ -6,9 +6,9 @@ from questions.models import Options, CategoryLevel1, CategoryLevel2, Question
 
 def testList(request):
     if request.session.get('student', False):
-        email = request.session['student']
-        if Student.objects.filter(email=email).exists():
-            student = Student.objects.filter(email=email)[0]
+        phone_number = request.session['student']
+        if Student.objects.filter(phone_number=phone_number).exists():
+            student = Student.objects.filter(phone_number=phone_number)[0]
             # tests = student.tests
             tests = StudentTest.objects.filter(student=student)
             started_tests = []
@@ -16,7 +16,8 @@ def testList(request):
             finished_tests = []
             missed_tests = []
             attending_tests = []
-            now = datetime.utcnow().isoformat()
+            now = datetime.now() + timedelta(hours=5, minutes=30)
+            now = now.isoformat()
             for test in tests:
                 # print("commence at:", test.test.commence_at.isoformat())
                 # print("stop commencing after:",
@@ -30,7 +31,7 @@ def testList(request):
                     finished_tests.append(test.test)
                 elif test.test.commence_at.isoformat() < now and test.test.stop_commenceing_after.isoformat() > now and test.status == "not_attended":
                     started_tests.append(test.test)
-                elif test.end_at.isoformat() < datetime.utcnow().isoformat() and test.status == "attending":
+                elif test.end_at.isoformat() < now and test.status == "attending":
                     test.status="finished"
                     test.save()
                     finished_tests.append(test.test)
@@ -53,7 +54,8 @@ def testList(request):
 
 
 def inTestTimings(test):
-    now = datetime.utcnow().isoformat()
+    now = datetime.now() + timedelta(hours=5, minutes=30)
+    now = now.isoformat()
     if test.commence_at.isoformat() < now and test.stop_commenceing_after.isoformat() > now:
         return True
     return False
@@ -80,15 +82,17 @@ def startTest(student_test):
         hr = int(test.total_duration.strftime('%H'))
         min = int(test.total_duration.strftime('%M'))
         sec = int(test.total_duration.strftime('%S'))
-        student_test.end_at = datetime.now() + timedelta(hours=hr, minutes=min, seconds=sec+10)
+        now = datetime.now() + timedelta(hours=5, minutes=30)
+        # now = now.isoformat()
+        student_test.end_at = now + timedelta(hours=hr, minutes=min, seconds=sec+10)
         duration = getTimeObj(test.total_duration)
-    elif student_test.end_at.isoformat() < datetime.utcnow().isoformat():
+    elif student_test.end_at.isoformat() < now.isoformat():
         duration = False
     elif student_test.status == "attending":
         format = "%Y-%m-%d %H:%M:%S.%f"
         end_at_formated = student_test.end_at.strftime(format)
         end_at_datetime = datetime.strptime(end_at_formated, format)
-        datetime_now_formated = datetime.now().strftime(format)
+        datetime_now_formated = now.strftime(format)
         datetime_now_datetime = datetime.strptime(datetime_now_formated, format)
         d = end_at_datetime - datetime_now_datetime
         duration = getTimeObjTimeDelta(d)
@@ -141,9 +145,9 @@ def startTest(student_test):
 
 def test(request, test_id):
     if request.session.get('student', False):
-        email = request.session['student']
-        if Student.objects.filter(email=email).exists():
-            student = Student.objects.filter(email=email)[0]
+        phone_number = request.session['student']
+        if Student.objects.filter(phone_number=phone_number).exists():
+            student = Student.objects.filter(phone_number=phone_number)[0]
             test = Test.objects.get(id=test_id)
             if StudentTest.objects.filter(student=student, test=test).exists():
                 student_test = StudentTest.objects.filter(student=student, test=test)[0]
@@ -165,9 +169,9 @@ def test(request, test_id):
 
 def setOption(request):
     if request.session.get('student', False):
-        email = request.session['student']
-        if Student.objects.filter(email=email).exists():
-            student = Student.objects.filter(email=email)[0]
+        phone_number = request.session['student']
+        if Student.objects.filter(phone_number=phone_number).exists():
+            student = Student.objects.filter(phone_number=phone_number)[0]
             student_question_id = request.GET['student_question_id']
             student_question = StudentQuestion.objects.get(id=student_question_id)
             option_id = request.GET['option_id']
@@ -200,8 +204,9 @@ def setOption(request):
 
 def testFinishWithId(request, student_test_id):
     if request.session.get('student', False):
-        email = request.session['student']
-        if Student.objects.filter(email=email).exists():
+        phone_number = request.session['student']
+        if Student.objects.filter(phone_number=phone_number).exists():
+            # student = Student.objects.filter(phone_number=phone_number)[0]
             student_test = StudentTest.objects.get(id=student_test_id)
             student_test.status = 'finished'
             student_test.save()
@@ -213,9 +218,9 @@ def testFinishWithId(request, student_test_id):
 
 def test_finish(request):
     if request.session.get('student', False):
-        email = request.session['student']
-        if Student.objects.filter(email=email).exists():
-            student = Student.objects.filter(email=email)[0]
+        phone_number = request.session['student']
+        if Student.objects.filter(phone_number=phone_number).exists():
+            student = Student.objects.filter(phone_number=phone_number)[0]
             return render(request, 'test_finish.html', {"student": student})
         else:
             return redirect('/log-in')
@@ -231,7 +236,8 @@ def testListInstitute(request):
             finished_tests = []
             yet_to_start_tests = []
             started_tests = []
-            now = datetime.utcnow().isoformat()
+            now = datetime.now() + timedelta(hours=5, minutes=30)
+            now = now.isoformat()
             for test in tests:
                 # print("commence at:", test.test.commence_at.isoformat())
                 # print("stop commencing after:",
@@ -302,7 +308,7 @@ def createTestPage(request):
                     "id": cat1.id,
                     "sub_categories": sub_categories
                 })
-            print(categories)
+            # print(categories)
             return render(request, 'create_test_select_questions.html', {"institute": institute, "categories": categories})
         else:
             return redirect('/log-in')
@@ -334,7 +340,8 @@ def createTest(request):
                         test_question = TestQuestions(test=test, question=question_obj)
                         test_question.save()
                 except:
-                    print("Questions not selected")
+                    # print("Questions not selected")
+                    pass
                 students = Student.objects.all()
                 for student in students:
                     student_test = StudentTest(test=test, student=student)
@@ -425,9 +432,9 @@ def updateShowResults(request):
 
 def resultStudent(request, test_id):
     if request.session.get('student', False):
-        email = request.session['student']
-        if Student.objects.filter(email=email).exists():
-            student = Student.objects.filter(email=email)[0]
+        phone_number = request.session['student']
+        if Student.objects.filter(phone_number=phone_number).exists():
+            student = Student.objects.filter(phone_number=phone_number)[0]
             test = Test.objects.get(id=test_id)
             student_test = StudentTest.objects.filter(student=student, test__id=test_id)[0]
             student_questions = StudentQuestion.objects.filter(student_test=student_test)
@@ -471,11 +478,69 @@ def resultStudent(request, test_id):
 
 def instructions(request, test_id):
     if request.session.get('student', False):
-        email = request.session['student']
-        if Student.objects.filter(email=email).exists():
-            student = Student.objects.filter(email=email)[0]
+        phone_number = request.session['student']
+        if Student.objects.filter(phone_number=phone_number).exists():
+            student = Student.objects.filter(phone_number=phone_number)[0]
             test = Test.objects.get(id=test_id)
             return render(request, "instruction.html", {"test": test})
+        else:
+            return redirect('/log-in')
+    else:
+        return redirect('/log-in')
+
+def questionList(request):
+    if request.session.get('institute', False):
+        email = request.session['institute']
+        if Institute.objects.filter(email=email).exists():
+            institute = Institute.objects.filter(email=email)[0]
+            categories = []
+            category1 = CategoryLevel1.objects.all()
+            for cat1 in category1:
+                category2 = cat1.sub_categories.all()
+                sub_categories = []
+                for cat2 in category2:
+                    questions = cat2.questions.all()
+                    questions_response = []
+                    for question in questions:
+                        options = question.options.all()
+                        temp = {
+                            "id": question.id,
+                            "question": question.question,
+                            "image": question.question_image,
+                            "has_multiple_answers": question.has_multiple_answers,
+                            "options": options
+                        }
+                        questions_response.append(temp)
+                    sub_categories.append({
+                        "title": cat2.title,
+                        "id": cat2.id,
+                        "questions": questions_response
+                    })
+                categories.append({
+                    "title": cat1.title,
+                    "id": cat1.id,
+                    "sub_categories": sub_categories
+                })
+            # print(categories)
+            return render(request, 'questions.html', {"institute": institute, "categories": categories})
+        else:
+            return redirect('/log-in')
+    else:
+        return redirect('/log-in')
+
+def addQuestion(request):
+    if request.session.get('institute', False):
+        email = request.session['institute']
+        if Institute.objects.filter(email=email).exists():
+            institute = Institute.objects.filter(email=email)[0]
+            category = request.POST['category']
+            question = request.POST['question']
+            option1 = request.POST['option1']
+            option2 = request.POST['option2']
+            option3 = request.POST['option3']
+            option4 = request.POST['option4']
+            correct_option = request.POST['option']
+
         else:
             return redirect('/log-in')
     else:

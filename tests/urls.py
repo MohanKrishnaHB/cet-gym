@@ -14,4 +14,5 @@ urlpatterns = [
     path('i/create-test-post', views.createTest),
     path('i/result/<int:test_id>', views.resultInstitute),
     path('i/show-answers', views.updateShowResults),
+    path('i/question-list', views.questionList),
 ]

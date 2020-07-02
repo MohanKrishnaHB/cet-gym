@@ -11,6 +11,7 @@ class Institute(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=257)
+    phone_number = models.CharField(max_length=20, unique=True)
     institute_code = models.CharField(
         max_length=20, default=random_code, unique=True)
 
@@ -20,8 +21,8 @@ class Institute(models.Model):
 
 class Student(models.Model):
     reg_no = models.CharField(max_length=20, blank=True, null=True)
-    name = models.CharField(max_length=50)
-    email = models.EmailField(unique=True)
+    name = models.CharField(max_length=50, unique=True)
+    email = models.EmailField(unique=True, blank=True, null=True)
     phone_number = models.CharField(max_length=20, unique=True)
     password = models.CharField(max_length=257)
     puc_college = models.CharField(max_length=200, blank=True, null=True)

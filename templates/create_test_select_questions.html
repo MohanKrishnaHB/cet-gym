@@ -19,8 +19,8 @@
 
   <script>
     let questions_selected = [];
-
     function updateQuestions(checked, id) {
+      next_btn = document.getElementById("nextBtn");
       if (checked)
         questions_selected.push(id);
       else {
@@ -29,6 +29,12 @@
       }
       let no_of_selected_questions_element = document.getElementById("no_of_selected_questions");
       no_of_selected_questions_element.innerHTML = questions_selected.length;
+      if (questions_selected.length > 0) {
+        next_btn.disabled = false;
+      }
+      else {
+        next_btn.disabled = true;
+      }
     }
 
     function moveNext() {
@@ -86,9 +92,11 @@
               {% for category in categories %}
               <div class="card">
                 <div class="card-header">
-                  <a class="card-link" data-toggle="collapse" href="#category{{category.id}}">
-                    {{category.title}}
-                  </a>
+                  <div class="row">
+                    <a class="col card-link" data-toggle="collapse" href="#category{{category.id}}">
+                      {{category.title}}
+                    </a>
+                  </div>
                 </div>
                 <div id="category{{category.id}}" class="collapse" data-parent="#category">
                   <div class="card-body">
@@ -96,10 +104,12 @@
                       {% for subcategory in category.sub_categories %}
                       <div class="card">
                         <div class="card-header">
-                          <a class="card-link" data-toggle="collapse"
-                            href="#subcategory{{category.id}}{{subcategory.id}}">
-                            {{subcategory.title}}
-                          </a>
+                          <div class="row">
+                            <a class="col card-link" data-toggle="collapse"
+                              href="#subcategory{{category.id}}{{subcategory.id}}">
+                              {{subcategory.title}}
+                            </a>
+                          </div>
                         </div>
                         <div id="subcategory{{category.id}}{{subcategory.id}}" class="collapse"
                           data-parent="#subcategory{{category.id}}">
@@ -151,7 +161,7 @@
         </div>
         <div class="row">
           <div class="col-auto ml-auto">
-            <button class="btn btn-primary" onclick="moveNext()">Next</button>
+            <button class="btn btn-primary" onclick="moveNext()" id="nextBtn" disabled>Next</button>
           </div>
         </div>
       </div>
