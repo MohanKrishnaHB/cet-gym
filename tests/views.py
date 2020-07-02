@@ -3,6 +3,7 @@ from users.models import Student, Institute
 from .models import StudentTest, Test, TestQuestions, StudentQuestion, StudentQuestionOption
 from datetime import datetime, timedelta, time
 from questions.models import Options, CategoryLevel1, CategoryLevel2, Question
+from django.core.files.storage import FileSystemStorage
 
 def testList(request):
     if request.session.get('student', False):
@@ -534,13 +535,59 @@ def addQuestion(request):
         if Institute.objects.filter(email=email).exists():
             institute = Institute.objects.filter(email=email)[0]
             category = request.POST['category']
-            question = request.POST['question']
+            category = CategoryLevel2.objects.get(id=category)
+            question_title = request.POST['question']
             option1 = request.POST['option1']
             option2 = request.POST['option2']
             option3 = request.POST['option3']
             option4 = request.POST['option4']
             correct_option = request.POST['option']
-
+            co1, co2, co3, co4 = False, False, False, False
+            if correct_option == "option1":
+                co1 = True
+            elif correct_option == "option2":
+                co2 = True
+            elif correct_option == "option3":
+                co3 = True
+            elif correct_option == "option4":
+                co4 = True
+            try:
+                question_image = request.FILES['questionimage']
+                question = Question(question=question_title, category=category, question_image=question_image)
+                question.save()
+            except:
+                question = Question(question=question_title, category=category)
+                question.save()
+            try:
+                optionimage = request.FILES['option1image']
+                option = Options(question=question, option=option1, image=optionimage, is_true=co1)
+                option.save()
+            except:
+                option = Options(question=question, option=option1, is_true=co1)
+                option.save()
+            
+            try:
+                optionimage = request.FILES['option2image']
+                option = Options(question=question, option=option2, image=optionimage, is_true=co2)
+                option.save()
+            except:
+                option = Options(question=question, option=option2, is_true=co2)
+                option.save()
+            try:
+                optionimage = request.FILES['option3image']
+                option = Options(question=question, option=option3, image=optionimage, is_true=co3)
+                option.save()
+            except:
+                option = Options(question=question, option=option3, is_true=co3)
+                option.save()
+            try:
+                optionimage = request.FILES['option4image']
+                option = Options(question=question, option=option4, image=optionimage, is_true=co4)
+                option.save()
+            except:
+                option = Options(question=question, option=option4, is_true=co4)
+                option.save()
+            return redirect("/test/i/question-list")
         else:
             return redirect('/log-in')
     else:

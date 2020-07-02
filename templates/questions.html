@@ -49,12 +49,25 @@
                           </div>
                           <div class="card-body">
                             {% for option in question.options %}
-                            <div class="custom-control custom-radio">
-                              <input type="radio" class="custom-control-input" id="option{{question.id}}{{option.id}}"
-                                name="{{question.id}}" value="customEx" disabled {% if option.is_true %} checked
-                                {% endif %} />
-                              <label class="custom-control-label"
-                                for="option{{question.id}}{{option.id}}">{{option.option}}</label>
+                            <div class="row mb-1">
+                              <div class="col-12 col-xl-3 border rounded">
+                                <div class="row">
+                                  <div class="col-auto align-self-center">
+                                    <div class="custom-control custom-radio">
+                                      <input type="radio" class="custom-control-input"
+                                        id="option{{question.id}}{{option.id}}" name="{{question.id}}" value="customEx"
+                                        disabled {% if option.is_true %} checked {% endif %} />
+                                      <label class="custom-control-label"
+                                        for="option{{question.id}}{{option.id}}">{{option.option}}</label>
+                                    </div>
+                                  </div>
+                                  {% if option.image %}
+                                  <div class="col-auto">
+                                    <img class="img-fluid" src="/uploads/{{option.image}}" alt="">
+                                  </div>
+                                  {% endif %}
+                                </div>
+                              </div>
                             </div>
                             {% endfor %}
                           </div>
@@ -80,7 +93,8 @@
   <div class="modal" id="subcat{{subcategory.id}}modal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
-        <form action="" method="POST">
+        <form action="/test/i/add-question" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
           <input type="hidden" value="{{subcategory.id}}" name="category" />
           <!-- Modal Header -->
           <div class="modal-header">
