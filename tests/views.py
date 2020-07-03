@@ -289,6 +289,7 @@ def createTestPage(request):
                 for cat2 in category2:
                     questions = cat2.questions.all()
                     questions_response = []
+                    question_ids = []
                     for question in questions:
                         options = question.options.all()
                         temp = {
@@ -298,11 +299,14 @@ def createTestPage(request):
                             "has_multiple_answers": question.has_multiple_answers,
                             "options": options
                         }
+                        question_ids.append(str(question.id))
                         questions_response.append(temp)
+
                     sub_categories.append({
                         "title": cat2.title,
                         "id": cat2.id,
-                        "questions": questions_response
+                        "questions": questions_response,
+                        "all_questions_id": ",".join(question_ids)
                     })
                 categories.append({
                     "title": cat1.title,
