@@ -6,6 +6,8 @@ import sendgrid
 import os
 from sendgrid.helpers.mail import *
 import requests
+from random import randint
+
 
 
 def logIn(request):
@@ -14,7 +16,7 @@ def logIn(request):
     if request.method == "POST":
         phone_number = request.POST['phone_number']
         password = request.POST['password']
-        if Student.objects.filter(phone_number=phone_number).exists():
+        if Student.objects.filter(phone_number=phone_number).exists() or Student.objects.filter(puc_college=phone_number).exists():
             student = Student.objects.filter(phone_number=phone_number)[0]
             if student.password == password:
                 request.session['student'] = student.phone_number
@@ -129,17 +131,64 @@ def sendEmail(request):
         # response = sg.client.mail.send.post(request_body=mail.get())
         # requests.post(os.environ['BLOWERIO_URL'] + '/messages', data={'to': '+919066528665', 'message': 'Hello from Mohan'})
 
-        TILL_URL = os.environ.get("TILL_URL")
+        # TILL_URL = os.environ.get("TILL_URL")
 
-        requests.post(TILL_URL, json={
-            "phone": ["+918088167939", "9066528665"],
+        # requests.post(TILL_URL, json={
+        #     "phone": ["+918088167939"],
+        #     "questions" : [{
+        #         "text": "Favorite color?",
+        #         "webhook": "https://mitm-cet-2020.herokuapp.com/"
+        #     }],
+        #     "conclusion": "Thank you for your time"
+        # })
+        return redirect("/log-in")
+    except:
+        return redirect("/register")
+
+def changePassword(request):
+    if request.session.get('student', False):
+        phone_number = request.session['student']
+        if Student.objects.filter(phone_number=phone_number).exists():
+            student = Student.objects.filter(phone_number=phone_number)[0]
+            password = request.POST['password']
+            student.password = password
+            student.save()
+            return redirect("/")
+        else:
+            return redirect('/log-in')
+    else:
+        return redirect('/log-in')
+
+def random_code():
+    d = randint(1000000, 100000000)
+    return hex(d)[2:8]
+
+def sendResetsms(student):
+    phone_number = "+91"+student.phone_number
+    msg = "MIT MYSORE \n Your New Password is '"+student.puc_college+"'.\n Login Using below link and change your password."
+    TILL_URL = os.environ.get("TILL_URL")
+    requests.post(TILL_URL, json={
+            "phone": [phone_number],
             "questions" : [{
-                "text": "Favorite color?",
+                "text": msg,
                 "webhook": "https://mitm-cet-2020.herokuapp.com/"
             }],
             "conclusion": "Thank you for your time"
         })
-        return redirect("/log-in")
-    except:
-        return redirect("/register")
-    
+
+def resetPassword(request):
+    if request.method == "GET":
+        return render(request, "forgot_password.html")
+    if request.method == "POST":
+        phone_number = request.POST["phone_number"]
+        if Student.objects.filter(phone_number=phone_number).exists():
+            student = Student.objects.filter(phone_number=phone_number)[0]
+            student.puc_college = random_code()
+            student.save()
+            sendResetsms(student)
+            return_obj = {"isResetSuccess": True}
+            return render(request, "forgot_password.html", return_obj)
+        else:
+            return_obj = {"isPhoneInvalid": True}
+            return render(request, "forgot_password.html", return_obj)
+    return redirect("/")
