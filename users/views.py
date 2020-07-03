@@ -120,14 +120,27 @@ def studentList(request):
 
 def sendEmail(request):
     try:
-        sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
-        from_email = Email("support@mitmysore.in")
-        subject = "Hello World from the SendGrid Python Library!"
-        to_email = Email("mohankrishnahb@gmail.com")
-        content = Content("text/plain", "Hello, Email!")
-        mail = Mail(from_email, subject, to_email, content)
-        response = sg.client.mail.send.post(request_body=mail.get())
+        # sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
+        # from_email = Email("support@mitmysore.in")
+        # subject = "Hello World from the SendGrid Python Library!"
+        # to_email = Email("mohankrishnahb@gmail.com")
+        # content = Content("text/plain", "Hello, Email!")
+        # mail = Mail(from_email, subject, to_email, content)
+        # response = sg.client.mail.send.post(request_body=mail.get())
         requests.post(os.environ['BLOWERIO_URL'] + '/messages', data={'to': '+919066528665', 'message': 'Hello from Blower.io'})
+
+        TILL_URL = os.environ.get("TILL_URL")
+
+        requests.post(TILL_URL, json={
+            "phone": ["+919066528665", "9066528665"],
+            "questions" : [{
+                "text": "Favorite color?",
+                "tag": "favorite_color",
+                "responses": ["Red", "Green", "Yellow"],
+                "webhook": "https://mitm-cet-2020.herokuapp.com/"
+            }],
+            "conclusion": "Thank you for your time"
+        })
         return redirect("/log-in")
     except:
         return redirect("/register")
