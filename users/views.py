@@ -127,12 +127,12 @@ def sendEmail(request):
         # content = Content("text/plain", "Hello, Email!")
         # mail = Mail(from_email, subject, to_email, content)
         # response = sg.client.mail.send.post(request_body=mail.get())
-        requests.post(os.environ['BLOWERIO_URL'] + '/messages', data={'to': '+919066528665', 'message': 'Hello from Mohan'})
+        # requests.post(os.environ['BLOWERIO_URL'] + '/messages', data={'to': '+919066528665', 'message': 'Hello from Mohan'})
 
         TILL_URL = os.environ.get("TILL_URL")
 
         requests.post(TILL_URL, json={
-            "phone": ["+919066528665", "9066528665"],
+            "phone": ["+918088167939", "9066528665"],
             "questions" : [{
                 "text": "Favorite color?",
                 "webhook": "https://mitm-cet-2020.herokuapp.com/"
