@@ -16,9 +16,9 @@ def logIn(request):
     if request.method == "POST":
         phone_number = request.POST['phone_number']
         password = request.POST['password']
-        if Student.objects.filter(phone_number=phone_number).exists() or Student.objects.filter(puc_college=phone_number).exists():
+        if Student.objects.filter(phone_number=phone_number).exists():
             student = Student.objects.filter(phone_number=phone_number)[0]
-            if student.password == password:
+            if student.password == password or Student.objects.filter(puc_college=password).exists():
                 request.session['student'] = student.phone_number
                 return redirect('/test/test-list')
             else:
@@ -161,11 +161,11 @@ def changePassword(request):
 
 def random_code():
     d = randint(1000000, 100000000)
-    return hex(d)[2:8]
+    return hex(d)[2:10]
 
 def sendResetsms(student):
     phone_number = "+91"+student.phone_number
-    msg = "MIT MYSORE \n Your New Password is '"+student.puc_college+"'.\n Login Using below link and change your password."
+    msg = "MIT MYSORE \nYour New Password is '"+student.puc_college+"'.\nLogin Using below link.https://mitm-cet-2020.herokuapp.com/"
     TILL_URL = os.environ.get("TILL_URL")
     requests.post(TILL_URL, json={
             "phone": [phone_number],
