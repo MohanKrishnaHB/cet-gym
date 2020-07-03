@@ -133,7 +133,7 @@
                         id="question{{forloop.counter}}">
                         <div class="row border rounded py-1">
                             <div class="col">
-                                <div>{{question.question.question}}</div>
+                                <div>{{question.question.question|safe}}</div>
                                 {% if question.question.question_image %}
                                 <div>
                                     <img src="/uploads/{{question.question.question_image}}" class="img-fluid">
@@ -151,7 +151,7 @@
                                         value="customEx"
                                         onchange="setOption(this.checked, {{question.sq_id}}, {{option.option.id}})">
                                     <label class="custom-control-label"
-                                        for="option{{q_index}}{{forloop.counter}}">{{option.option.option}}</label>
+                                        for="option{{q_index}}{{forloop.counter}}">{{option.option.option|safe}}</label>
                                 </div>
                                 {% endfor %}
                                 {% else %}

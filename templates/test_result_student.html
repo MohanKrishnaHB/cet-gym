@@ -14,7 +14,7 @@
         <div class="card-header">
             <div class="row">
                 <div class="col">
-                    {{question.question.question}}
+                    {{question.question.question|safe}}
                     {% if question.question.question_image %}
                     <div class="w-100"></div>
                     <img class="img-fluid" src="/uploads/{{question.question.question_image}}" alt="">
@@ -38,7 +38,7 @@
                                     {% if option.is_marked %} checked {% endif %} />
                                 <label class="custom-control-label"
                                     for="option{{question.question.id}}{{option.option.id}}">
-                                    {{option.option.option}}
+                                    {{option.option.option|safe}}
                                     {% if option.option.is_true %}
                                     <i class="text-success ml-1 fa fa-check"></i>
                                     {% endif %}

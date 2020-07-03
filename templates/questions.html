@@ -41,7 +41,7 @@
                           <div class="card-header">
                             <div class="row">
                               <div class="col">
-                                {{question.question}}
+                                {{question.question|safe}}
                                 <div class="w-100"></div>
                                 <img class="img-fluid" src="/uploads/{{question.image}}" alt="">
                               </div>
@@ -58,7 +58,7 @@
                                         id="option{{question.id}}{{option.id}}" name="{{question.id}}" value="customEx"
                                         disabled {% if option.is_true %} checked {% endif %} />
                                       <label class="custom-control-label"
-                                        for="option{{question.id}}{{option.id}}">{{option.option}}</label>
+                                        for="option{{question.id}}{{option.id}}">{{option.option|safe}}</label>
                                     </div>
                                   </div>
                                   {% if option.image %}
