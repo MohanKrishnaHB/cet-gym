@@ -167,7 +167,7 @@
                                                         onchange="setOption(this.checked, {{question.sq_id}}, {{option.option.id}})"
                                                         {% if option.is_marked %}checked{% endif %}>
                                                     <label class="custom-control-label"
-                                                        for="option{{q_index}}{{forloop.counter}}">{{option.option.option}}
+                                                        for="option{{q_index}}{{forloop.counter}}">{{option.option.option|safe}}
                                                     </label>
                                                 </div>
                                             </div>
