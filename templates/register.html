@@ -152,7 +152,7 @@
           <div class="form-group">
             <label for="email">Email address</label>
             <input type="text" class="form-control" placeholder="Enter email" name="email" id="email"
-              pattern="[A-Za-z]+@[A-Za-z]+.[A-Za-z]+" value="{% if email %}{{email}}{% endif %}" />
+              pattern="[A-Za-z0-9]+@[A-Za-z0-9]+.[A-Za-z]+" value="{% if email %}{{email}}{% endif %}" />
             {% if email_exists %}
             <div>
               <small class="text-danger">Email already exists, <a href="/log-in">log-in</a></small>
