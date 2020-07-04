@@ -71,6 +71,7 @@ def register(request):
                     institute_code=institute_code)[0]
                 student = Student(email=email, name=name, password=password, institute=institute, reg_no=reg_no, phone_number=phone_number, puc_college=puc_college, preffered_branch=preffered_branch)
                 student.save()
+                return render(request, "login.html", {"registered": True})
             else:
                 return_obj = {"invalid_institute": True,
                               "email": email, "name": name}
