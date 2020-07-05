@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'li+$s30p#of37#0kgdo=5#vukyb@ol69+(1$nys(!12-c8_tv%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -84,6 +84,7 @@ DATABASES = {
     }
 }
 
+# Old Free Db
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
@@ -91,6 +92,17 @@ DATABASES = {
 #         'USER': 'ujfbjtgsmbyglm',
 #         'PASSWORD': '8b336001315a6755474a12e7af38a1463c2f295691c3f7056ca6c5a57eb5e08e',
 #         'HOST': 'ec2-34-206-31-217.compute-1.amazonaws.com',
+#         'PORT': '5432'
+#     }
+# }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'd40qi85bbpq01g',
+#         'USER': 'nrztmdekmdoukp',
+#         'PASSWORD': 'eb6d0d55e5836f1692d19908d073c6d5269e71d2fe131f62647d9c8a6ef34035',
+#         'HOST': 'ec2-34-193-117-204.compute-1.amazonaws.com',
 #         'PORT': '5432'
 #     }
 # }
