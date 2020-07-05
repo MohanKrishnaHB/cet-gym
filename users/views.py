@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Student, Institute
+from tests.models import Test, StudentTest
 from tests.models import StudentTest
 from datetime import datetime
 import sendgrid
@@ -71,6 +72,21 @@ def register(request):
                     institute_code=institute_code)[0]
                 student = Student(email=email, name=name, password=password, institute=institute, reg_no=reg_no, phone_number=phone_number, puc_college=puc_college, preffered_branch=preffered_branch)
                 student.save()
+                try:
+                    physics = Test.objects.filter(title="Physics")[0]
+                    student_test = StudentTest(test=physics, student=student)
+                    student_test.save()
+                    chemistry = Test.objects.filter(title="Chemistry")[0]
+                    student_test = StudentTest(test=chemistry, student=student)
+                    student_test.save()
+                    mathematics = Test.objects.filter(title="Mathematics")[0]
+                    student_test = StudentTest(test=mathematics, student=student)
+                    student_test.save()
+                    biology = Test.objects.filter(title="Biology")[0]
+                    student_test = StudentTest(test=biology, student=student)
+                    student_test.save()
+                except:
+                    pass
                 return render(request, "login.html", {"registered": True})
             else:
                 return_obj = {"invalid_institute": True,
