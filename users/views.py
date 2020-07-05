@@ -57,9 +57,9 @@ def register(request):
         preffered_branch = request.POST['preffered_branch']
         # institute_code = request.POST['institute_code']
         institute_code = Institute.objects.all()[0].institute_code
-        # if Student.objects.filter(email=email).exists():
-        #     return_obj = {"email_exists": True, "email": email,"phone_number":phone_number, "name": name, "reg_no": reg_no, "puc_college":puc_college, "preffered_branch":preffered_branch}
-        #     return render(request, "register.html", return_obj)
+        if Student.objects.filter(email=email).exists():
+            return_obj = {"email_exists": True, "email": email,"phone_number":phone_number, "name": name, "reg_no": reg_no, "puc_college":puc_college, "preffered_branch":preffered_branch}
+            return render(request, "register.html", return_obj)
         if Student.objects.filter(phone_number=phone_number).exists():
             return_obj = {"phone_number_exists": True, "email": email,"phone_number":phone_number, "name": name, "reg_no": reg_no, "puc_college":puc_college, "preffered_branch":preffered_branch}
             return render(request, "register.html", return_obj)
