@@ -78,12 +78,12 @@ def getTimeObjTimeDelta(dt):
 def startTest(student_test):
     test = student_test.test
     duration = getTimeObj(test.total_duration)
+    now = datetime.now() + timedelta(hours=5, minutes=30)
     # if not student_test.end_at and student_test.status == "not_attended":
     if student_test.status == "not_attended":
         hr = int(test.total_duration.strftime('%H'))
         min = int(test.total_duration.strftime('%M'))
         sec = int(test.total_duration.strftime('%S'))
-        now = datetime.now() + timedelta(hours=5, minutes=30)
         # now = now.isoformat()
         student_test.end_at = now + timedelta(hours=hr, minutes=min, seconds=sec+10)
         duration = getTimeObj(test.total_duration)

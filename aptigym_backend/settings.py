@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'li+$s30p#of37#0kgdo=5#vukyb@ol69+(1$nys(!12-c8_tv%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -96,20 +96,20 @@ DATABASES = {
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'd40qi85bbpq01g',
-#         'USER': 'nrztmdekmdoukp',
-#         'PASSWORD': 'eb6d0d55e5836f1692d19908d073c6d5269e71d2fe131f62647d9c8a6ef34035',
-#         'HOST': 'ec2-34-193-117-204.compute-1.amazonaws.com',
-#         'PORT': '5432'
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd40qi85bbpq01g',
+        'USER': 'nrztmdekmdoukp',
+        'PASSWORD': 'eb6d0d55e5836f1692d19908d073c6d5269e71d2fe131f62647d9c8a6ef34035',
+        'HOST': 'ec2-34-193-117-204.compute-1.amazonaws.com',
+        'PORT': '5432'
+    }
+}
 
-import dj_database_url
-db_from_env = dj_database_url.config(conn_max_age=600)
-DATABASES['default'].update(db_from_env)
+# import dj_database_url
+# db_from_env = dj_database_url.config(conn_max_age=600)
+# DATABASES['default'].update(db_from_env)
 
 
 # Password validation
