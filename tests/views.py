@@ -441,7 +441,7 @@ def resultStudent(request, test_id):
         if Student.objects.filter(phone_number=phone_number).exists():
             student = Student.objects.filter(phone_number=phone_number)[0]
             test = Test.objects.get(id=test_id)
-            if not (test.show_results and test.show_answers):
+            if not (test.show_answers and test.show_score):
                 return redirect("/")
             student_test = StudentTest.objects.filter(student=student, test__id=test_id)[0]
             student_questions = StudentQuestion.objects.filter(student_test=student_test)
