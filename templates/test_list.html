@@ -41,7 +41,20 @@
               </td>
             </tr>
             {% endfor %}
-
+            {% for test in finished_tests %}
+            <tr>
+              <td>{{test.title}}</td>
+              <td>
+                {{ test.total_duration|date:'H:i:s' }}
+              </td>
+              <td>{{test.no_of_questions}}</td>
+              <td>
+                <a class="btn btn-primary btn-sm" href="/test/{{test.id}}">
+                  Resume Test
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
             {% if yet_to_start_tests %}
             <tr class="table-primary">
               <th colspan="4" class="text-center">Assigned tests</th>
@@ -59,7 +72,7 @@
             <tr class="table-success">
               <th colspan="4" class="text-center">Finished tests</th>
             </tr>
-            {% for test in finished_tests %}
+            <!-- {% for test in finished_tests %}
             <tr>
               <td>{{test.title}}</td>
               <td>
@@ -74,7 +87,8 @@
               <td>Results not yet released</td>
               {% endif %}
             </tr>
-            {% endfor %} {% endif %} {% if missed_tests %}
+            {% endfor %} -->
+            {% endif %} {% if missed_tests %}
             <tr class="table-danger">
               <th colspan="4" class="text-center">missed tests</th>
             </tr>
