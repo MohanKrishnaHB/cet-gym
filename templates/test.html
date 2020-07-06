@@ -18,7 +18,7 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script>
-        let duration = {};
+        let duration = { 'hr': 0, 'min': 59, 'sec': 0 };
         let timeComponent = {};
         let interval = {};
 
@@ -53,7 +53,7 @@
         };
 
         function onLoad(d) {
-            duration = d;
+            // duration = d;
             interval = setInterval(updateDuration, 1000);
             timeComponent = document.getElementById("timer");
         }
