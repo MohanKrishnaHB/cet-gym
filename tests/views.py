@@ -157,10 +157,10 @@ def test(request, test_id):
                     return render(request, "test.html", {"duration": duration, "questions": questions, 'test': test, 'student_test_id':student_test.id})
                 if student_test.status == "attending":
                     questions, duration = startTest(student_test)
-                    if duration == False:
-                        student_test.status="finished"
-                        student_test.save()
-                        return redirect("/test/test-list")
+                    # if duration == False:
+                    #     student_test.status="finished"
+                    #     student_test.save()
+                    #     return redirect("/test/test-list")
                     return render(request, "test.html", {"student": student, "duration": duration, "questions": questions, 'test': test, 'student_test_id':student_test.id})
                 return redirect('/test/test-list')
         else:
