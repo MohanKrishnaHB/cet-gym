@@ -142,6 +142,7 @@ def startTest(student_test):
             "sq_id": student_question.id,
             "options": options
         })
+    duration['min'] += 50
     return questions, duration
 
 def test(request, test_id):
