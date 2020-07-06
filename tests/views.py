@@ -89,7 +89,7 @@ def startTest(student_test):
         duration = getTimeObj(test.total_duration)
     elif student_test.end_at.isoformat() < now.isoformat():
         duration = False
-    elif student_test.status == "attending":
+    elif student_test.status == "attending" and student_test.status == "finished":
         format = "%Y-%m-%d %H:%M:%S.%f"
         end_at_formated = student_test.end_at.strftime(format)
         end_at_datetime = datetime.strptime(end_at_formated, format)
