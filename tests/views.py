@@ -89,7 +89,7 @@ def startTest(student_test):
         duration = getTimeObj(test.total_duration)
     elif student_test.end_at.isoformat() < now.isoformat():
         duration = False
-    elif student_test.status == "attending" and student_test.status == "finished":
+    elif student_test.status == "attending" or student_test.status == "finished":
         format = "%Y-%m-%d %H:%M:%S.%f"
         end_at_formated = student_test.end_at.strftime(format)
         end_at_datetime = datetime.strptime(end_at_formated, format)
@@ -155,7 +155,7 @@ def test(request, test_id):
                 if student_test.status == "not_attended":
                     questions, duration = startTest(student_test)
                     return render(request, "test.html", {"duration": duration, "questions": questions, 'test': test, 'student_test_id':student_test.id})
-                if student_test.status == "attending" and student_test.status == "finished":
+                if student_test.status == "attending" or student_test.status == "finished":
                     questions, duration = startTest(student_test)
                     # if duration == False:
                     #     student_test.status="finished"
