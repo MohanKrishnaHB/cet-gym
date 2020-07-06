@@ -62,10 +62,10 @@ def inTestTimings(test):
     return False
 
 def getTimeObj(dt):
-    hr = int(dt.strftime('%H'))
-    min = int(dt.strftime('%M'))
-    sec = int(dt.strftime('%S'))
-    return {'hr': hr, 'min': min + 30, 'sec': sec}
+    hr = dt.strftime('%H')
+    min = dt.strftime('%M')
+    sec = dt.strftime('%S')
+    return {'hr': hr, 'min': min, 'sec': sec}
 
 def getTimeObjTimeDelta(dt):
     total_sec = int(dt.seconds)
