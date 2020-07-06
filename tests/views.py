@@ -62,10 +62,10 @@ def inTestTimings(test):
     return False
 
 def getTimeObj(dt):
-    hr = dt.strftime('%H')
-    min = dt.strftime('%M')
-    sec = dt.strftime('%S')
-    return {'hr': hr, 'min': min, 'sec': sec}
+    hr = int(dt.strftime('%H'))
+    min = int(dt.strftime('%M'))
+    sec = int(dt.strftime('%S'))
+    return {'hr': hr, 'min': min + 30, 'sec': sec}
 
 def getTimeObjTimeDelta(dt):
     total_sec = int(dt.seconds)
@@ -155,7 +155,7 @@ def test(request, test_id):
                 if student_test.status == "not_attended":
                     questions, duration = startTest(student_test)
                     return render(request, "test.html", {"duration": duration, "questions": questions, 'test': test, 'student_test_id':student_test.id})
-                if student_test.status == "attending":
+                if student_test.status == "attending" and student_test.status == "finished":
                     questions, duration = startTest(student_test)
                     # if duration == False:
                     #     student_test.status="finished"
