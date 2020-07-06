@@ -41,7 +41,7 @@
               </td>
             </tr>
             {% endfor %}
-            {% for test in finished_tests %}
+            <!-- {% for test in finished_tests %}
             <tr>
               <td>{{test.title}}</td>
               <td>
@@ -54,7 +54,7 @@
                 </a>
               </td>
             </tr>
-            {% endfor %}
+            {% endfor %} -->
             {% if yet_to_start_tests %}
             <tr class="table-primary">
               <th colspan="4" class="text-center">Assigned tests</th>
@@ -72,7 +72,7 @@
             <tr class="table-success">
               <th colspan="4" class="text-center">Finished tests</th>
             </tr>
-            <!-- {% for test in finished_tests %}
+            {% for test in finished_tests %}
             <tr>
               <td>{{test.title}}</td>
               <td>
@@ -87,7 +87,7 @@
               <td>Results not yet released</td>
               {% endif %}
             </tr>
-            {% endfor %} -->
+            {% endfor %}
             {% endif %} {% if missed_tests %}
             <tr class="table-danger">
               <th colspan="4" class="text-center">missed tests</th>
