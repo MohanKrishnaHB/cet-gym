@@ -32,7 +32,7 @@ class Question(models.Model):
 
 class Options(models.Model):
     question = models.ForeignKey('Question', on_delete=models.CASCADE, related_name='options')
-    option = models.CharField(max_length=100)
+    option = models.CharField(max_length=500)
     image = models.ImageField(upload_to='images/options/', null=True, blank=True)
     is_true = models.BooleanField(default=False)
 
